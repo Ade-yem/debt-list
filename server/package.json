@@ -1,0 +1,19 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "debt list app backend for ToluwaNiose",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ade-yem/debt-list.git"
+  },
+  "author": "Adeyemi Adejumo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Ade-yem/debt-list/issues"
+  },
+  "homepage": "https://github.com/Ade-yem/debt-list#readme"
+}
