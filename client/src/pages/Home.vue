@@ -1,13 +1,10 @@
 <script setup>
-import { VueTyper } from 'vue-typer';
+	import { VueTyper } from 'vue-typer';
 
-export default {
   components: {
 	  VueTyper
-
 	}
-	
-}
+
 </script>
 
 <template>
@@ -33,3 +30,7 @@ export default {
 		</div>
 	</div>
 <template/>
+
+<style>
+@import 'vue-typer/dist/vue-typer.css';
+</style>
