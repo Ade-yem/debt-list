@@ -1,0 +1,23 @@
+import { reactive } from 'vue'
+import { loginUser } from './api'
+
+export const store = reactive({
+  loggedIn: false,
+  user: {},
+  login: async (username:string, password: string) => {
+    try {
+      const data = await loginUser({username, password})
+      return data
+    } catch (err: any) {
+        throw new Error(err.error);
+    }    
+  },
+  signup: async (username:string, name: string, password: string) => {
+    try {
+      const data = await loginUser({username, name, password})
+      return data
+    } catch (err: any) {
+      throw new Error(err.error);
+    }    
+  }
+})

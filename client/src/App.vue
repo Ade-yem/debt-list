@@ -12,10 +12,10 @@ import DebtBoard from './pages/Board.vue';
 <template>
   <div>
 		<Header/>
-		<router-view>Home</router-view>
-		<router-view>Login</router-view>
-		<router-view>Signup</router-view>
-		<router-view>DebtBoard</router-view>
+		<RouterView><Home/></RouterView>
+		<RouterView><Login/></RouterView>
+		<RouterView><Signup/></RouterView>
+		<RouterView><DebtBoard/></RouterView>
 	</div>
 </template>
 <style>
