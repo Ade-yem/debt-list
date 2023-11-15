@@ -86,11 +86,5 @@
     return date.toDateString() === today.toDateString();
   };
 
-  return {
-    daysOfWeek,
-    monthYear,
-    calendar,
-    isToday
-  };
  
 </script>

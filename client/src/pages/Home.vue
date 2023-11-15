@@ -1,5 +1,4 @@
 <script setup lang="ts">
-	import { RouterLink } from 'vue-router';
   import { VueTyper } from 'vue-typer';
 
   components: {
@@ -27,12 +26,8 @@
 	<div>
     <h3>Where do you want to go?</h3>
 		<div>
-		  <RouterLink to="/debt-list">Debtors  List</RouterLink>
-		  <RouterLink to="/price-list">Debtors  List</RouterLink>
+		  <a href="/debt-list">Debtors  List</a>
+		  <a href="/price-list">Debtors  List</a>
 		</div>
 	</div>
-<template/>
-
-<style>
-@import 'vue-typer/dist/vue-typer.css';
-</style>
+</template>

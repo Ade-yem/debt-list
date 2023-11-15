@@ -19,3 +19,12 @@ export const registerUser = async (user: Object) => {
   return data;
     
 }
+
+export const logoutUser = async () => {
+  const res = await axios.post("/user/logout")
+  if (res.status !== 201) {
+    throw new Error(res.data);
+  };
+  const data = await res.data
+  return data.message;
+}
