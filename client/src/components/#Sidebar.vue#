@@ -43,7 +43,7 @@
     return
   })
 
-  const switchMode = computed(() => mode.value = mode.value === "date-mode" ? "name-mode" : "date-mode");
+  const switchMode = computed(() => [<0;6;21Mmode.value = mode.value === "date-mode" ? "name-mode" : "date-mode");
 
 
 
