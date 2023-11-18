@@ -17,8 +17,51 @@ dist-ssr
 !.vscode/extensions.json
 .idea
 .DS_Store
+# Node.js
+node_modules/
+
+# Dependency directories
+/dist/
+/.sass-cache/
+/cache/
+/logs/
+/temp/
+
+# Compiled files
+*.log
+*.gz
+
+# Sensitive or environment-specific files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Editor-specific files
+.vscode/
+.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+# Emacs-related files
+*~
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# User-specific files
+npm-debug.log
+yarn-error.log
+
+# Build process
+/dist/
+/static/
+
+# Miscellaneous
+*.bak
+*.backup
+*.log
