@@ -1,9 +1,10 @@
 import { reactive } from 'vue'
 import { loginUser, registerUser, logoutUser } from './auth-api'
 
+
 export const store = reactive({
   loggedIn: false,
-  user: {},
+  user: "username",
   login: async (username:string, password: string) => {
     try {
       const data = await loginUser({username, password})

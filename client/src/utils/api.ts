@@ -11,44 +11,37 @@ export const getNames = async () => {
 }
 
 export const getListByName = async (name: string) => {
-  await axios.get("/list-by-name", {name})
-  .then(res => {
-    return res.data;
-  }).catch(err => {
+  try {
+  const res = await axios.get("/list-by-name", { name })
+  return res.data;
+  }catch(err: any) {
     console.log(err.response.data);
-    })
-
+  }
 }
 
-export const getListByDate = async (date: Date) => {
-  await axios.get("/list-by-date", {date})
-  .then(res => {
+export const getListByDate = async (date: string) => {
+  try{
+    const res = await axios.get("/list-by-date", { date })
     return res.data;
-  }).catch(err => {
+  } catch (err: any) {
     console.log(err.response.data);
-    })
-
+  }
 }
 
-export const addCard = async (name: string, date: Date, debt: number, amount_payed: number, paid: Boolean) => {
-  await axios.post("/add-card", { name, date, amount_paid, paid })
-  .then(res => {
+export const addCard = async (name: string, date: string, amount: number, amount_paid: number, paid: boolean) => {
+  try {
+    const res = await axios.post("/add-card", { name, date, amount, amount_paid, paid })
     return res.data;
-  }).catch(err => {
+  }catch(err: any) {
     console.log(err.response.data);
-    })
-
+  }
 }
 
-export const editCard = async (name: string, date: Dat\
-e, debt: number, amount_payed: number, paid: Boolean)\
- => {
-  await axios.post("/add-card", { name, date, amount_\
-paid, paid })
-  .then(res => {
+export const editCard = async (name: string, date: string, amount: number, amount_paid: number, paid: boolean) => {
+  try {
+    const res = await axios.post("/add-card", { name, date, amount, amount_paid, paid })
     return res.data;
-  }).catch(err => {
+  }catch(err: any) {
     console.log(err.response.data);
-    })
-
+  }
 }

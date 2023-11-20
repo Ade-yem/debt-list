@@ -28,3 +28,11 @@ export const logoutUser = async () => {
   const data = await res.data
   return data.message;
 }
+export const checkUserAuth = async () => {
+  const res = await axios.post("/user/status")
+  if (res.status !== 200) {
+    throw new Error(res.data);
+  };
+  const data = await res.data
+  return data.message;
+}

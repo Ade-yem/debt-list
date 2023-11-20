@@ -1,34 +1,23 @@
 <script setup lang="ts">
-import VueTyper from 'vue-typer';
 
-const textArray = ["ToluwaNiose Stores", "What do you want to buy", "Buscuits Sweets", "Pasta Noodles"];
-const repeatCount = Infinity;
-const shuffleText = false;
-const initialAction = 'typing';
-const preTypeDelay = 70;
-const typeDelay = 70;
-const preEraseDelay = 2000;
-const eraseDelay = 150;
-const eraseStyle = 'backspace';
-const eraseOnComplete = false;
-const caretAnimation = 'smooth';
 </script>
 
 <template>
+  <div class="home">
   <div class='flex justify-center mt-3 mx-auto items-center'>
-    <vue-typer
-      :text='textArray'
-      :repeat='repeatCount'
-      :shuffle='shuffleText'
-      :initial-action='initialAction'
-      :pre-type-delay='preTypeDelay'
-      :type-delay='typeDelay'
-      :pre-erase-delay='preEraseDelay'
-      :erase-delay='eraseDelay'
-      :erase-style='eraseStyle'
-      :erase-on-complete='eraseOnComplete'
-      :caret-animation='caretAnimation'
-    ></vue-typer>
+    <VueTyper
+  :text='["Arya Stark","Jon Snow","Daenerys Targaryen","Melisandre","Tyrion Lannister"]'
+  :repeat='Infinity'
+  :shuffle='true'
+  initial-action='typing'
+  :pre-type-delay='70'
+  :type-delay='70'
+  :pre-erase-delay='2000'
+  :erase-delay='250'
+  erase-style='backspace'
+  :erase-on-complete='true'
+  caret-animation='smooth'
+></VueTyper>
   </div>
 
   <div>
@@ -38,8 +27,19 @@ const caretAnimation = 'smooth';
       <router-link to="/price-list">Price List</router-link>
     </div>
   </div>
+  </div>
 </template>
 
-<style>
-
+<style scoped>
+  .home {
+    background-color: #f3f4f6;
+    height: 100vh;
+    width: 100vw;
+    background-image: url("../assets/shop-bg.jpg");
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+  }
 </style>

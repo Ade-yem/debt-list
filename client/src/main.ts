@@ -5,22 +5,24 @@ import router from './utils/router.ts';
 import axios from "axios";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import VueTyper from 'vue-typer'
+import "vue3-typer/dist/vue-typer.css"
+import { faBars, faCaretDown, faTimes} from '@fortawesome/free-solid-svg-icons'
 
-import { faUserSecret} from '@fortawesome/free-solid-svg-icons'
-import { faBars} from '@fortawesome/free-solid-svg-icons'
 
-
-library.add(faUserSecret, faBars)
+library.add(faCaretDown, faBars, faTimes)
 
 axios.create({
-  baseURL: 'https://api.example.com',
+  baseURL: 'http://localhost:8000',
 	timeout: 5000,
-	withCredentials: false,
+	withCredentials: true,
 	headers: {
 	  'Content-Type': 'application/json'
 	}
 });
 
 const app = createApp(App)
+app.component('font-awesome-icon', FontAwesomeIcon)
 app.use(router);
+app.use(VueTyper);
 app.mount('#app');
