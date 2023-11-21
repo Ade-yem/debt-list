@@ -13,7 +13,7 @@ import { faBars, faCaretDown, faTimes} from '@fortawesome/free-solid-svg-icons'
 library.add(faCaretDown, faBars, faTimes)
 
 axios.create({
-  baseURL: 'http://localhost:8000',
+  baseURL: 'http://localhost:8000/api/v1',
 	timeout: 5000,
 	withCredentials: true,
 	headers: {

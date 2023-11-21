@@ -11,7 +11,7 @@ export const validateSignup = [
 ]
 export const validateDebt = [
   body("name").trim().notEmpty().withMessage({message: "Name is empty"}),
-  body("date").trim().matches(/^\d{2}\/\d{2}\/\d{4}$/).withMessage({message: 'Invalid date format. Use DD/MM/YYYY' }),,
+  body("date").trim().matches(/^\d{2}\/\d{2}\/\d{4}$/).withMessage({message: 'Invalid date format. Use DD/MM/YYYY' }),
   body('amount').trim().isNumeric().withMessage({ message: 'Amount must be a number' })
     .custom((value) => {
       const amount = parseFloat(value);
@@ -21,7 +21,7 @@ export const validateDebt = [
       return true;
     }),
   body("paid").isBoolean().withMessage({message: "Must be boolean"}),
-  body("written_by").trim().notEmpty().withMessage({message: "Name is empty"}),
+  body("written_by").trim().notEmpty().withMessage({message: "Author's name is empty"}),
 ]
 
 export const validate = (validations: ValidationChain[]) => {

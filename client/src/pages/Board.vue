@@ -56,6 +56,8 @@ import { getListByDate, getListByName } from "../utils/api";
     date: string;
     amount_paid: number;
     paid: boolean;
+    written_by?: string;
+    comment?: string;
     editing?: boolean;
   };
   type dataType = {
