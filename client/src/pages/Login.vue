@@ -27,13 +27,17 @@
 <script setup lang="ts">
   import { ref } from "vue";
   import { store } from "../utils/store.ts";
+import { useRouter } from "vue-router";
   const username = ref("");
   const password = ref("");
+  const router = useRouter()
   const Submit = async () => {
     try {
       const data = await store.login(username.value, password.value)
       store.loggedIn = true;
-      store.user = data
+      store.user = data.username;
+      router.push("/")
+      
       } catch (err) {
         console.error(err)
         }

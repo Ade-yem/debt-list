@@ -19,7 +19,7 @@ export default class DebtController {
   }
   static async getListByName(req: Request, res: Response, next: NextFunction) {
       try {
-        const { name } = req?.params;
+        const { name } = req?.body;
         const debtorsList = await debtList.find({name});
         if (!debtorsList) return res.status(400).json({message: "Unable to get list"})
         return res.status(200).json({message: 'OK', debtorsList})
@@ -30,7 +30,7 @@ export default class DebtController {
   }
   static async getListByDate(req: Request, res: Response, next: NextFunction) {
       try {
-        const { date } = req?.params;
+        const { date } = req?.body;
         const debtorsList = await debtList.find({date});
         if (!debtorsList) return res.status(401).json({message: "Unable to get list"})
         return res.status(200).json({message: 'OK', debtorsList})

@@ -1,5 +1,5 @@
 <template>
-<header :class="['absolute top-0 w-[100%] align-middle left-0 border-b border-gray-400 h-fit']">
+<header :class="['absolute top-0 w-[100%] align-middle z-10 left-0 border-b border-gray-400 h-fit']">
 <div class="flex justify-between  ">
   <div class="h-10 w-25 m-2" id="logo">
     <img src="../assets/toluwa1.jpg" class="h-full w-full" alt="tolu">

@@ -12,7 +12,7 @@ export default class AuthController {
       // find if user exists
       const user = await User.findOne({username})
       if (user) return res.status(401).json({error: "User already exist"})
-      const phash = hash(password, 10);
+      const phash = await hash(password, 10);
       const newUser = new User({ name, username, password: phash });
       await newUser.save();
       res.clearCookie(cookieName, {

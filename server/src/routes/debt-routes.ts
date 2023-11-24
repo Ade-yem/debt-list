@@ -6,8 +6,8 @@ import { validate, validateDebt } from "../utils/validators.js";
 export const debtRoutes = Router()
 
 debtRoutes.get("/name-list", verifyToken, DebtController.getNames)
-debtRoutes.get("/list-by-name/:name", verifyToken, DebtController.getListByName)
-debtRoutes.get("/list-by-date/:date", verifyToken, DebtController.getListByDate)
+debtRoutes.post("/list-by-name", verifyToken, DebtController.getListByName)
+debtRoutes.post("/list-by-date", verifyToken, DebtController.getListByDate)
 debtRoutes.post("/add-card", verifyToken, validate(validateDebt), DebtController.createCard)
 debtRoutes.put("/update-card", verifyToken, DebtController.updateCard)
 debtRoutes.delete("/delete-card/:id", verifyToken, DebtController.deleteCard)

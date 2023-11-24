@@ -34,7 +34,7 @@
 
   
   <script setup lang="ts">
-    import { ref, computed, watch, defineEmits } from 'vue';
+    import { ref, computed, watch } from 'vue';
   
     const days: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const currentDate: Date = new Date();
@@ -42,7 +42,10 @@
     const currentYear = ref<number>(currentDate.getFullYear());
     const selectedDate = ref<string | null>(currentDate.toLocaleDateString());
     const emit = defineEmits(["selectedDate"])
-    emit("selectedDate", selectedDate)
+    watch([selectedDate], () => {
+      emit("selectedDate", selectedDate)
+    })
+    
     const daysInMonth = computed(() => new Date(currentYear.value, currentMonth.value, 0).getDate());
 
     const calendar = computed(() => {
