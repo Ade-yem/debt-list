@@ -9,20 +9,11 @@ export const getNames = async () => {
 	}
 }
 
-export const getListByName = async (name: string) => {
+export const getList = async (data: string) => {
   try {
-  const res = await axios.post("/debt/list-by-name", {name})
+  const res = await axios.post("/debt/list", {data})
   return res.data;
   }catch(err: any) {
-    console.log(err.response.data);
-  }
-}
-
-export const getListByDate = async (date: string) => {
-  try{
-    const res = await axios.post(`/debt/list-by-date`, { date })
-    return res.data;
-  } catch (err: any) {
     console.log(err.response.data);
   }
 }

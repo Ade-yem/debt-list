@@ -7,10 +7,10 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import VueTyper from 'vue3-typer'
 import "vue3-typer/dist/vue-typer.css"
-import { faBars, faCaretDown, faTimes, faPlus} from '@fortawesome/free-solid-svg-icons'
+import { faBars, faCaretDown, faTimes, faPlus, faTrash} from '@fortawesome/free-solid-svg-icons'
 
 
-library.add(faCaretDown, faBars, faTimes, faPlus)
+library.add(faCaretDown, faBars, faTimes, faPlus, faTrash)
 
 axios.defaults.baseURL = 'http://localhost:5000/api/v1';
 axios.defaults.timeout = 5000;

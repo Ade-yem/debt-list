@@ -5,10 +5,9 @@ const priceSchema = new Schema({
     type: String,
     required: true
   },
-  price: {
-    type: Number,
-    required: true
-  }
+  variation: String,
+  bulk_price: Number,
+  unit_price: Number
 })
 
 export default mongoose.model("Price", priceSchema);
