@@ -195,3 +195,5 @@ node_modules/undici-types/readable.d.ts
 node_modules/undici-types/README.md
 node_modules/undici-types/webidl.d.ts
 node_modules/undici-types/websocket.d.ts
+server/.env
+.vscode/tasks.json
