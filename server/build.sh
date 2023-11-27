@@ -1,11 +1,14 @@
-#!/bin/bash
-
 echo "Building..."
+echo "Installing TypeScript globally..."
+npm install -g typescript
 
-# Install TypeScript locally (assuming it's listed in your package.json)
-npm install --save-dev typescript
+echo "Installing project dependencies..."
+npm install
 
-# Run TypeScript compilation
-npx tsc -p .
+echo "Installing TypeScript type declarations..."
+npm install --save-dev @types/express @types/mongoose @types/dotenv @types/cookie-parser @types/cors @types/node
+
+echo "Running TypeScript build..."
+tsc -p .
 
 echo "Build complete."
