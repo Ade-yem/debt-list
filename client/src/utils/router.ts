@@ -21,10 +21,10 @@ const router = createRouter({
   routes, // short for `routes: routes`
 })
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, _, next) => {
   const isAuthenticated = store.loggedIn;
 
-  if (to.name != 'login' || to.name != 'signup' && !isAuthenticated) {
+  if (to.name != 'login' && to.name != 'signup' && !isAuthenticated) {
     try {
       const res = await checkUserAuth(); // Assuming checkUserAuth returns an object with a "username" property
       store.loggedIn = true;

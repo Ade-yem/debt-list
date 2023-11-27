@@ -17,7 +17,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="week in calendar" :key="week" class="">
+        <tr v-for="week in calendar" key="week" class="">
           <td
             v-for="date in week"
             :key="date"
