@@ -8,7 +8,7 @@ import { router } from "./routes/index.js";
 config()
 
 const app = express();
-app.use(cors({origin: "http://localhost:5173", credentials: true }))
+app.use(cors({origin: process.env.FRONTENDURL, credentials: true }))
 app.use(express.json());
 app.use(cookieParser(process.env.secretKey))
 app.use("/api/v1", router);
