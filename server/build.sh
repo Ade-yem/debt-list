@@ -1,3 +1,6 @@
+echo "check node version"
+node -v
+
 echo "Building..."
 echo "Installing TypeScript globally..."
 npm install -g typescript
