@@ -11,7 +11,7 @@
     <router-link class="p-4 " to="/debt-list">Debtors</router-link>
     <router-link class="p-4 " to="/price-list">Price List</router-link>
   </div>
-  <div class=" text-lg font-semibold text-blue-500 font-serif py-4 px-6 mt-3">{{ store.user }}</div>
+  <div class=" text-lg font-semibold text-blue-500 font-serif py-4 px-6 mt-3" v-if="store.loggedIn">{{ store.user }}</div>
   <div @click="toggleCaret" class=" sm:hidden py-4 px-6 mt-3">
     <font-awesome-icon v-if="!caret" :icon="['fas', 'caret-down']" style="color: blue" size="2xl" />
     <font-awesome-icon v-else :icon="['fas', 'caret-down']" rotation=180 style="color: blue" size="2xl" />

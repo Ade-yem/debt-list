@@ -197,3 +197,4 @@ node_modules/undici-types/webidl.d.ts
 node_modules/undici-types/websocket.d.ts
 server/.env
 .vscode/tasks.json
+client/.env

@@ -13,6 +13,7 @@ import { faBars, faCaretDown, faTimes, faPlus, faTrash} from '@fortawesome/free-
 library.add(faCaretDown, faBars, faTimes, faPlus, faTrash)
 
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
+console.log(import.meta.env.VITE_BACKEND_URL);
 axios.defaults.timeout = 5000;
 axios.defaults.withCredentials = true;
 axios.defaults.headers.common['Content-Type'] = "application/json"
