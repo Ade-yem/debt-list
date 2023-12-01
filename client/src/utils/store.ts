@@ -10,7 +10,7 @@ export const store = reactive({
       const data = await loginUser({username, password})
       return data
     } catch (err: any) {
-        throw new Error(err.error);
+        throw new Error(err);
     }    
   },
   signup: async (username:string, name: string, password: string) => {
@@ -18,7 +18,7 @@ export const store = reactive({
       const data = await registerUser({username, name, password})
       return data
     } catch (err: any) {
-      throw new Error(err.error);
+      throw new Error(err);
     }    
   },
 	logout: async () => logoutUser(),

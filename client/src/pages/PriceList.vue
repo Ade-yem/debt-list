@@ -90,10 +90,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { addPrice, updatePrice, getList, deletePrice } from '../utils/price-api'
-import { computed } from '@vue/reactivity';
+  import { onMounted, ref, computed } from 'vue';
+  import { addPrice, updatePrice, getList, deletePrice } from '../utils/price-api'
+  import { useToast } from 'vue-toastification';
 
+  const toast = useToast()
   type Price = {
     _id?: string;
     name: string;
@@ -117,10 +118,13 @@ import { computed } from '@vue/reactivity';
 
   onMounted(async () => {
     try {
+     toast.info("Fetching data", {id: "get data"}) 
     const data = await getList()
+    toast.success("Fetching data successful", {id: "get data"}) 
     prices.value = data.pList;
     console.log(data.message)
     } catch (error) {
+      toast.error(`${error}`, {id: "get data"}) 
       console.error(error)
     }
   })
@@ -131,56 +135,77 @@ import { computed } from '@vue/reactivity';
 
   const delPrice = async (_id: string) => {
     try {
+      toast.info(`deleting record ${_id}`, {id: "get data"})
       const res = await deletePrice(_id)
       prices.value.filter(price => price._id !== _id )
-      console.log(res.message)
+      toast.success(`${res.message}`, {id: "get data"})
     } catch (error) {
+      toast.error(`${error}`, {id: "get data"})
       console.error(error)
     }
   }
 
-const closeModal = () => {
-  showModal.value = false;
-};
-const editPrice = (price: Price, field: "bulk_price" | "unit_price") => {
-  if (field === "bulk_price") {
-    editp.value.bulk_price = price.bulk_price
-  } else {
-    editp.value.unit_price = price.unit_price
-  }
-  price.editing = true;
-};
+  const closeModal = () => {
+    showModal.value = false;
+  };
 
-const saveEdit = async (price: Price, field: "bulk_price" | "unit_price") => {
-  price.editing = false;
+  /**
+   * set initial edit parameter and set price editing to be true
+   * @param price price to be edited
+   * @param field price field
+   */
+  const editPrice = (price: Price, field: "bulk_price" | "unit_price") => {
+    if (field === "bulk_price") {
+      editp.value.bulk_price = price.bulk_price
+    } else {
+      editp.value.unit_price = price.unit_price
+    }
+    price.editing = true;
+  };
 
-  // Perform logic to save the updated price (e.g., API call)
-  if (field === "bulk_price") {
-    if (editp.value.bulk_price === price.bulk_price) return
-    else price.bulk_price = editp.value.bulk_price
-  } else {
-    if (editp.value.unit_price === price.unit_price) return
-    else price.unit_price = editp.value.unit_price
-  }
-  try {
-    const data = await updatePrice(price)
-    console.log(data.message);
-  } catch (error) {
-    console.error(error)
-  }
-}
+  /**
+   * save the price edit
+   * @param price price to be edited
+   * @param field price field
+   */
 
-const savePrice = async () => {
-  // Perform logic to save the new price (e.g., API call)
-  try {
-    const data = await addPrice(newPrice.value)
-  // After saving, you may want to update the prices list and close the modal
-    prices.value.push(data.price)
-  } catch (error) {
-    console.error(error) 
+  const saveEdit = async (price: Price, field: "bulk_price" | "unit_price") => {
+    // Perform logic to save the updated price
+    toast.info("saving", {id: "edit"})
+    if (field === "bulk_price") {
+      if (editp.value.bulk_price === price.bulk_price) return
+      else price.bulk_price = editp.value.bulk_price
+    } else {
+      if (editp.value.unit_price === price.unit_price) return
+      else price.unit_price = editp.value.unit_price
+    }
+    try {
+      const data = await updatePrice(price)
+      toast.success(`${data.message}`, {id: "editing"});
+      price.editing = false;
+    } catch (error) {
+      console.error(error)
+      toast.error(`${error}`, {id: "editing"});
+    }
   }
-  closeModal();
-};
+  /**
+   * save the newly created price
+   */
+
+  const savePrice = async () => {
+    // Perform logic to save the new price (e.g., API call)
+    try {
+      toast.info("saving", {id: "edit"})
+      const data = await addPrice(newPrice.value)
+    // After saving, you may want to update the prices list and close the modal
+      prices.value.push(data.price)
+      toast.success(`${data.message}`, {id: "editing"});
+    } catch (error) {
+      toast.error(`${error}`, {id: "editing"});
+      console.error(error) 
+    }
+    closeModal();
+  };
 
   // Computed property for filtered names based on the search query
   const filteredPrices = computed(() => {

@@ -1,3 +1,4 @@
+
 import axios from "axios"
 
 export const getNames = async () => {
@@ -5,7 +6,7 @@ export const getNames = async () => {
     const res = await axios.get("/debt/name-list")
 	  return res.data;
   } catch(err: any) {
-	  console.log(err.response.data);
+	  console.log(err.error);
 	}
 }
 
@@ -14,7 +15,7 @@ export const getList = async (data: string) => {
   const res = await axios.post("/debt/list", {data})
   return res.data;
   }catch(err: any) {
-    console.log(err.response.data);
+    console.log(err.error);
   }
 }
 
@@ -23,7 +24,7 @@ export const addCard = async (record: Object) => {
     const res = await axios.post("/debt/add-card", record)
     return res.data;
   }catch(err: any) {
-    console.log(err.response.data);
+    console.log(err.error);
   }
 }
 
@@ -32,7 +33,7 @@ export const editCard = async (card: Object) => {
     const res = await axios.put("/debt/update-card", card)
     return res.data;
   }catch(err: any) {
-    console.log(err.response.data);
+    console.log(err.error);
   }
 }
 
@@ -41,6 +42,6 @@ export const deleteCard = async (id: string) => {
     const res = await axios.delete(`/debt/delete-card/${id}`)
     return res.data;
   }catch(err: any) {
-    console.log(err.response.data);
+    console.log(err.error);
   }
 }

@@ -109,19 +109,20 @@
       </div>
     </div>
         </div>
-      </div>
+  </div>
 </div>
 
 </template>
 <script setup lang="ts">
   import { ref, watch } from "vue";
   import Sidebar from "../components/Sidebar.vue";
-import { addCard, getList, editCard } from "../utils/debt-api.js";
-import { store } from "../utils/store";
-import { cardsList } from "../utils/cards";
-  
+  import { addCard, getList, editCard } from "../utils/debt-api.js";
+  import { store } from "../utils/store";
+  import { useToast } from "vue-toastification";
 
-type Cards = {
+  const toast = useToast()
+ 
+  type Cards = {
     _id?: string;
     name: string;
     amount: number;
@@ -140,7 +141,7 @@ type Cards = {
   const menu = ref(false);
   const query = ref<string>("");
   const mode = ref<string>("");
-  const list = ref<Cards[]>(cardsList);
+  const list = ref<Cards[]>([]);
   const modal = ref<boolean>(false);
   const date = ref<any>("");
   const expandedCard = ref<Cards | null>(null);
@@ -148,28 +149,38 @@ type Cards = {
   const record = ref<Cards>({
     name: '', amount: 0, date: new Date().toLocaleDateString("en-US"), amount_paid: 0, paid: false, written_by: store.user, comment: ""
   })
+
+  /**
+   * save new records data
+   */
   const save = async () => {
     record.value.date = new Date(date.value).toLocaleDateString("en-US")
-    console.log(record.value)
+    try {
+    toast.info("saving record", {id: "save"})
     const res = await addCard(record.value)
+    toast.success("success !!", {id: "save"})
     if (mode.value === "name-mode" && record.value.name === query.value || mode.value === "date-mode" && record.value.date === query.value) {
       list.value.push(res.card)
     }
     modal.value = false
+    } catch (error) {
+      toast.error("failed to create record", {id: "save"})
+    }
   }
   const setVal = (val: any) => query.value = val.value;
   const createRecord: (payload: MouseEvent) => void = () => modal.value = !modal.value
   const toggleMenu: (payload: MouseEvent) => void = () => menu.value = !menu.value;
 
-  /**
-   * watch - fetches the data based on the search query
-   */
+  // watch - fetches the data based on the search query
 	watch([query], async () => {
 
     try {
+      toast.info("fetching data", {id: "data"})
         const data: dataType  = await getList(query.value)
         list.value = data.debtorsList
+        toast.success("done", {id: "data"})
     } catch (error) {
+      toast.error("Failed to get data", {id: "data"})
       console.error(error)
     }
   })
@@ -178,21 +189,34 @@ type Cards = {
     card.editing = true;
   };
 
+  /**
+   * save edit record data
+   * @param card data to be edited
+   */
   const saveAmount = async (card: Cards) => {
+    
     if (editValue.value === card.amount_paid) return
-    else (card.amount_paid = editValue.value)
+    else {
+      let tempCard: Cards
+      tempCard = card
     // Perform any additional logic or API calls if needed
-    try {
-      const res = await editCard(card);
-      console.log(res.data);
-      card.editing = false;
-    } catch (error) {
-      console.error(error)
+      try {
+        toast.info(`effecting changes to card ${tempCard._id}`, {id: "edit"})
+        const res = await editCard(tempCard);
+        toast.success(`changes to card ${tempCard._id} made successfully`, {id: "edit"})
+        card.amount_paid = res.data.amount_paid
+        card.editing = false;
+      } catch (error) {
+        console.error(error)
+        toast.error("failed", {id: "edit"})
+      }
     }
   };
 
-  const openCard = (card: Cards) => {
-    expandedCard.value = card;
+  /**
+   * open record data
+   * @param card data to be edited
+   */
 
-};
+  const openCard = (card: Cards) => expandedCard.value = card;
 </script>

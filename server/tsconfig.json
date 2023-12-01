@@ -9,7 +9,7 @@
         "allowSyntheticDefaultImports": true,
         "sourceMap": true
     },
-    "include": ["./src/index.ts", "./src/**/*.ts", ".env"],
+    "include": ["./src/index.ts", "./src/**/*.ts", "./.env"],
     "exclude": ["node_modules"]
 }
 

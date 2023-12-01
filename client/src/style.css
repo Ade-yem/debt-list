@@ -82,3 +82,7 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.Vue-Toastification__container.my-container-class{
+  height: 40px;
+}
