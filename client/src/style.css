@@ -84,5 +84,5 @@ button:focus-visible {
 }
 
 .Vue-Toastification__container.my-container-class{
-  height: 40px;
+  max-height: 20px;
 }
