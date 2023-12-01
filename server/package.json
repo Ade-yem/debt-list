@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "type": "module",
-  "description": "debt list app backend for ToluwaNiose",
+  "description": "ToluwaNiose records app backend for ToluwaNiose",
   "main": "index.ts",
   "engines": {
     "node": ">=16.0.0"
