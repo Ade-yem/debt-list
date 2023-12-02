@@ -11,7 +11,13 @@
     <router-link class="p-4 " to="/debt-list">Debtors</router-link>
     <router-link class="p-4 " to="/price-list">Price List</router-link>
   </div>
-  <div class=" text-lg font-semibold text-blue-500 font-serif py-4 px-6 mt-3" v-if="store.loggedIn">{{ store.user }}</div>
+  <div class=" text-lg font-semibold text-blue-500 font-serif py-4 px-6 mt-3" v-if="store.loggedIn" @click="toggleLogout">{{ store.user || "Adeyemi" }}</div>
+  <!-- // a dropdown when the username is clicked that shows logout button -->
+  <div v-if="showLogout" class="absolute right-0 top-0 mt-16 mr-2 bg-white rounded-lg shadow-lg">
+    <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" @click="Logout">Logout</button>
+  </div>
+
+
   <div @click="toggleCaret" class=" sm:hidden py-4 px-6 mt-3">
     <font-awesome-icon v-if="!caret" :icon="['fas', 'caret-down']" style="color: blue" size="2xl" />
     <font-awesome-icon v-else :icon="['fas', 'caret-down']" rotation=180 style="color: blue" size="2xl" />
@@ -30,9 +36,27 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import { store } from '../utils/store';
+import { useToast } from 'vue-toastification';
+import { useRouter } from 'vue-router';
   
   const caret = ref(false);
+  const showLogout = ref(false);
+  const toast = useToast();
+  const router = useRouter();
+  const Logout = async () => {
+    try {
+    toast.info("Logging out", {id: "logout"})
+    await store.logout();
+    toast.success("Logged out successfully", {id: "logout"})
+    store.loggedIn = false;
+    store.user = "";
+    router.replace('/login');
 
-  
+    } catch (err: any) {
+      toast.error(`${err}`, {id: "logout"})
+      console.error(err)
+    }
+  }
   const toggleCaret = () => caret.value = !caret.value;
+  const toggleLogout = () => showLogout.value = !showLogout.value;
 </script>

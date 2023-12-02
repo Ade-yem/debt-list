@@ -1,4 +1,6 @@
 /// <reference types="vite/client" />
 declare module 'vue3-typer'
-declare module './pages/*.vue'
-declare module 'App.vue'
+declare module "*.vue" {
+    import { DefineComponent } from "vue";
+    export default DefineComponent<{}, {}, any>;
+}

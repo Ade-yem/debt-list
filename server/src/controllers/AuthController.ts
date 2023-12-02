@@ -52,21 +52,36 @@ export default class AuthController {
       return res.status(200).json({message: "User signin successfull", username})
     } catch (error) {
       console.error(error)
-      res.status(400).json({message: "Error", cause: error})
+      res.status(400).json({error})
+    }
+  }
+  static async forgotPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { username, password } = req.body;
+      // find if user exists
+      const user = await User.findOne({username})
+      if (!user) return res.status(401).json({error: "Invalid username"})
+      const phash = await hash(password, 10);
+      user.password = phash;
+      await user.save();
+      return res.status(200).json({message: "Password change successfull"})
+    } catch (error) {
+      console.error(error)
+      res.status(400).json({error})
     }
   }
 
   static async logoutUser(req: Request, res: Response, next: NextFunction) {
     try {
       const user = await User.findById(res.locals.jwtData.id);
-      if (!user) return res.status(401).json({message: "User does not exist or invalid token"});
+      if (!user) return res.status(401).json({error: "User does not exist or invalid token"});
         res.clearCookie(cookieName, {
           path: "/", domain: "localhost", httpOnly: true, signed: true
         })
         return res.status(200).json({message: 'User logged out successfully'})
       } catch (error) {
         console.error(error)
-      res.status(400).json({message: "Error", cause: error})
+      res.status(400).json({error})
       }
   }
 

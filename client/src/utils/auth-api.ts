@@ -3,7 +3,11 @@ import axios from "axios"
 export const loginUser = async (user: Object) => {
   const res = await axios.post("/user/login", user)
   if (res.status !== 200) {
-    throw new Error(res.data.error);
+    if (res.status === 422) {
+      throw new Error(res.data.errors[0].message);
+    } else {
+      throw new Error(res.data.error);
+    }
   }
   const data = await res.data
   return data;
@@ -14,7 +18,11 @@ export const registerUser = async (user: Object) => {
   // console.log(user)
   const res = await axios.post("/user/register", user)
   if (res.status !== 201) {
-    throw new Error(res.data.error);
+    if (res.status === 422) {
+      throw new Error(res.data.errors[0].message);
+    } else {
+      throw new Error(res.data.error);
+    }
   }
   const data = await res.data
   return data;   
@@ -26,7 +34,8 @@ export const logoutUser = async () => {
     throw new Error(res.data.error);
   };
   const data = await res.data
-  return data.message;
+  console.log(data.message);
+  window.location.href = "/login";
 }
 export const checkUserAuth = async () => {
   const res = await axios.get("/user/status")
@@ -36,4 +45,17 @@ export const checkUserAuth = async () => {
   const data = await res.data
   console.log(data.message)
   return data.username;
+}
+
+export const forgotPassword = async (user: Object) => {
+  const res = await axios.post("/user/forgot", user)
+  if (res.status !== 200) {
+    if (res.status === 422) {
+      throw new Error(res.data.errors[0].message);
+    } else {
+      throw new Error(res.data.error);
+    }
+  };
+  const data = await res.data
+  return data.message;
 }
