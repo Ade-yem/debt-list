@@ -17,15 +17,12 @@ export default class AuthController {
       await newUser.save();
       res.clearCookie(cookieName)
       const token = createToken(newUser._id.toString(), username, "10d");
-      const time = new Date()
-      time.setDate(time.getDate() + 10);
       res.cookie(cookieName, token)
       return res.status(201).json({message: "User signup successfull", username})
     } catch (error) {
       console.error(error)
       res.status(400).json({message: "Error", cause: error})
     }
-
   }
 
   static async loginUser(req: Request, res: Response, next: NextFunction) {
@@ -38,8 +35,6 @@ export default class AuthController {
       if (!comp) return res.status(401).json({error: "Invalid password"})
       res.clearCookie(cookieName)
       const token = createToken(user._id.toString(), username, "10d");
-      const time = new Date()
-      time.setDate(time.getDate() + 10);
       res.cookie(cookieName, token)
       return res.status(200).json({message: "User signin successfull", username})
     } catch (error) {
