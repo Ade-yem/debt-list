@@ -3,7 +3,7 @@
 <template>
   <div class="home">
     <div class="content flex flex-col items-center w-full absolute top-0 left-0 space-y-10 justify-center h-full">
-      <div class="mt-3 mx-auto items-center">
+      <div class="mt-3 mx-auto items-center dark:text-white">
         <VueTyper
           :text='["Check the latest prices","Check the debt records","What are we selling?","Pasta Noodles","Where are you going?",]'
           :repeat='Infinity'

@@ -2,11 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import User  from "../models/user.js"
 import { compare, hash } from "bcrypt";
 import { createToken } from "../utils/token-manager.js";
-import {config} from "dotenv"
-config()
 
 const cookieName = "auth_token";
-const domain = process.env.DOMAIN
 
 export default class AuthController {
   static async createUser(req: Request, res: Response, next: NextFunction) {
@@ -18,15 +15,11 @@ export default class AuthController {
       const phash = await hash(password, 10);
       const newUser = new User({ name, username, password: phash });
       await newUser.save();
-      res.clearCookie(cookieName, {
-        path: "/", domain, httpOnly: true, signed: true
-      })
+      res.clearCookie(cookieName)
       const token = createToken(newUser._id.toString(), username, "10d");
       const time = new Date()
       time.setDate(time.getDate() + 10);
-      res.cookie(cookieName, token, {
-        path: "/", domain, httpOnly: true, signed: true, expires: time
-      })
+      res.cookie(cookieName, token)
       return res.status(201).json({message: "User signup successfull", username})
     } catch (error) {
       console.error(error)
@@ -43,15 +36,11 @@ export default class AuthController {
       if (!user) return res.status(401).json({error: "Invalid username"})
       const comp = await compare(password, user.password)
       if (!comp) return res.status(401).json({error: "Invalid password"})
-      res.clearCookie(cookieName, {
-        path: "/", domain, httpOnly: true, signed: true
-      })
+      res.clearCookie(cookieName)
       const token = createToken(user._id.toString(), username, "10d");
       const time = new Date()
       time.setDate(time.getDate() + 10);
-      res.cookie(cookieName, token, {
-        path: "/", domain, httpOnly: true, signed: true, expires: time
-      })
+      res.cookie(cookieName, token)
       return res.status(200).json({message: "User signin successfull", username})
     } catch (error) {
       console.error(error)
@@ -78,9 +67,7 @@ export default class AuthController {
     try {
       const user = await User.findById(res.locals.jwtData.id);
       if (!user) return res.status(401).json({error: "User does not exist or invalid token"});
-        res.clearCookie(cookieName, {
-          path: "/", domain, httpOnly: true, signed: true
-        })
+        res.clearCookie(cookieName)
         return res.status(201).json({message: 'User logged out successfully'})
       } catch (error) {
         console.error(error)

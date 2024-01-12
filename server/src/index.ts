@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { config } from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import session from "express-session";
 import { router } from "./routes/index.js";
 
 config()
@@ -10,7 +11,21 @@ config()
 const app = express();
 app.use(cors({origin: process.env.FRONTENDURL, credentials: true }))
 app.use(express.json());
-app.use(cookieParser(process.env.secretKey))
+app.use(cookieParser(process.env.secretKey));
+app.use(session({
+  secret: process.env.secretKey as string,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: true,
+    sameSite: "none",
+    domain: process.env.DOMAIN,
+    path: "/",
+    maxAge: 60 * 60 * 24 * 10 * 1000,
+    signed: true,
+    httpOnly: true
+  }
+}))
 app.use("/api/v1", router);
 const db = process.env.mongoURI as string;
 
