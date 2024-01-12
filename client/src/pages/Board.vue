@@ -64,16 +64,16 @@
         <label for="amount" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Amount</label>
       </div>
       <div class="relative mb-6">
-        <input type="number" v-model="record.amount_paid" id="amount_paid" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-        <label for="amount_paid" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Amount Paid</label>
-      </div>
-      <div class="relative mb-6">
         <input type="date" required v-model="date" id="date" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
         <label for="date" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Date</label>
       </div>
       <div class="relative mb-6">
-        <input type="text" v-model="record.comment" id="comment" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-        <label for="comment" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Comment</label>
+        <label for="tag" class="sr-only">Tag</label>
+        <select v-model="record.tag" id="tag" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+            <option selected>Choose a tag</option>
+            <option value="transfer">Transfer</option>
+            <option value="normal">Normal</option>
+        </select>
       </div>
       <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
     </form>
@@ -100,8 +100,14 @@
       <input class="bg-transparent px-6 py-4 block border rounded-lg w-full" id="amount_paid" v-model="expandedCard.amount_paid" disabled />
       </div>
       <div class="mb-4">
-      <label for="comment">Comment:</label>
-      <textarea id="comment" class="bg-transparent px-6 py-4 block border rounded-lg w-full" v-model="expandedCard.comment"></textarea>
+      <p for="history">Payment History</p>
+      <div class="bg-transparent px-6 py-4 block border rounded-lg w-full leading-relaxed" v-for="history in expandedCard.history" :key="history">
+        <p> {{ history }} </p>
+      </div>
+      </div>
+      <div class="mb-4">
+      <label for="comment">Tag:</label>
+      <input id="comment" class="bg-transparent px-6 py-4 block border rounded-lg w-full" v-model="expandedCard.tag"/>
       </div>
       <div class="mb-4">
       <label for="writtenBy">Written By:</label>
@@ -114,7 +120,7 @@
 
 </template>
 <script setup lang="ts">
-  import { ref, watch } from "vue";
+  import { ref, watch, onMounted } from "vue";
   import Sidebar from "../components/Sidebar.vue";
   import { addCard, getList, editCard } from "../utils/debt-api.js";
   import { store } from "../utils/store";
@@ -130,7 +136,8 @@
     amount_paid: number;
     paid: boolean;
     written_by?: string;
-    comment?: string;
+    history?: string[];
+    tag?: string;
     editing?: boolean;
   };
   type dataType = {
@@ -140,42 +147,49 @@
 
   const menu = ref(false);
   const query = ref<string>("");
-  const mode = ref<string>("");
+  const mode = ref<string>("date-mode");
   const list = ref<Cards[]>([]);
   const modal = ref<boolean>(false);
   const date = ref<any>("");
   const expandedCard = ref<Cards | null>(null);
   const editValue = ref<number>(0)
   const record = ref<Cards>({
-    name: '', amount: 0, date: new Date().toLocaleDateString("en-US"), amount_paid: 0, paid: false, written_by: store.user, comment: ""
+    name: '', amount: 0, date: new Date().toLocaleDateString(), amount_paid: 0, paid: false, written_by: store.user, tag: "Choose a tag"
   })
+  const setVal = (val: any) => query.value = val.value;
+  const createRecord: (payload: MouseEvent) => void = () => modal.value = !modal.value
+  const toggleMenu: (payload: MouseEvent) => void = () => menu.value = !menu.value;
 
   /**
    * save new records data
    */
   const save = async () => {
-    record.value.date = new Date(date.value).toLocaleDateString("en-US")
+    record.value.date = new Date(date.value).toLocaleDateString()
     try {
     toast.info("saving record", {id: "save"})
     const res = await addCard(record.value)
     toast.success("success !!", {id: "save"})
-    if (mode.value === "name-mode" && record.value.name === query.value || mode.value === "date-mode" && record.value.date === query.value) {
-      list.value.push(res.card)
-    }
+      if (mode.value === "name-mode" && record.value.name === query.value || mode.value === "date-mode" && record.value.date === query.value) {
+        list.value.push(res.card)
+      }
     modal.value = false
+    window.location.reload()
     } catch (error) {
       toast.error("failed to create record", {id: "save"})
     }
   }
-  const setVal = (val: any) => query.value = val.value;
-  const createRecord: (payload: MouseEvent) => void = () => modal.value = !modal.value
-  const toggleMenu: (payload: MouseEvent) => void = () => menu.value = !menu.value;
+  
+  onMounted(async () => {
+    const today = new Date().toLocaleDateString()
+    query.value = today
+  })
 
   // watch - fetches the data based on the search query
 	watch([query], async () => {
 
     try {
       toast.info("fetching data", {id: "data"})
+      console.log(query.value)
         const data: dataType  = await getList(query.value)
         list.value = data.debtorsList
         toast.success("done", {id: "data"})
@@ -199,12 +213,13 @@
     else {
       let tempCard: Cards
       tempCard = card
+      tempCard.amount_paid = editValue.value
     // Perform any additional logic or API calls if needed
       try {
         toast.info(`effecting changes to card ${tempCard._id}`, {id: "edit"})
         const res = await editCard(tempCard);
-        toast.success(`changes to card ${tempCard._id} made successfully`, {id: "edit"})
-        card.amount_paid = res.data.amount_paid
+        toast.success(`Transaction update successful`, {id: "edit"})
+        card = res
         card.editing = false;
       } catch (error) {
         console.error(error)
@@ -215,7 +230,7 @@
 
   /**
    * open record data
-   * @param card data to be edited
+   * @param card data to be shown
    */
 
   const openCard = (card: Cards) => expandedCard.value = card;

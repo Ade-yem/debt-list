@@ -7,6 +7,7 @@ export const getNames = async () => {
 	  return res.data;
   } catch(err: any) {
 	  console.log(err.error);
+    throw new Error("Unable to get list of names")
 	}
 }
 
@@ -16,6 +17,7 @@ export const getList = async (data: string) => {
   return res.data;
   }catch(err: any) {
     console.log(err.error);
+    throw new Error("Unable to get data")
   }
 }
 
@@ -24,7 +26,8 @@ export const addCard = async (record: Object) => {
     const res = await axios.post("/debt/add-card", record)
     return res.data;
   }catch(err: any) {
-    console.log(err.error);
+    console.log(err);
+    throw new Error("Unable to create record")
   }
 }
 
@@ -32,8 +35,9 @@ export const editCard = async (card: Object) => {
   try {
     const res = await axios.put("/debt/update-card", card)
     return res.data;
-  }catch(err: any) {
+  } catch(err: any) {
     console.log(err.error);
+    throw new Error("Unable to update record")
   }
 }
 
@@ -41,7 +45,8 @@ export const deleteCard = async (id: string) => {
   try {
     const res = await axios.delete(`/debt/delete-card/${id}`)
     return res.data;
-  }catch(err: any) {
+  } catch(err: any) {
     console.log(err.error);
+    throw new Error("Unable to delete record")
   }
 }

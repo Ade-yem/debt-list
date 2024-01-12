@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import debtList from "../models/debt-list.js";
-import { ObjectId } from "mongodb";
 
 export default class DebtController {
   static async getNames(req: Request, res: Response, next: NextFunction) {
@@ -56,9 +55,12 @@ export default class DebtController {
   }
   static async createCard(req: Request, res: Response, next: NextFunction) {
       try {
-        const { name, date, amount, amount_paid, paid, written_by, comment } = req?.body;
+        const { name, date, amount, paid, written_by, tag } = req?.body;
+        const history: string[] = []
+        const amount_paid = 0;
+        history.push(`${new Date().toLocaleDateString()} - Owed ${amount} naira`)
         const newCard = new debtList({
-          name, date, amount, amount_paid, paid, written_by, comment
+          name, date, amount, amount_paid, paid, written_by, tag, history
         })
         await newCard.save()
         return res.status(200).json({message: 'OK', card: newCard})
@@ -69,9 +71,17 @@ export default class DebtController {
   }
   static async updateCard(req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, date, amount, amount_paid, paid, _id, written_by, comment } = req?.body;
+      let { name, date, amount, amount_paid, paid, _id, written_by, tag, history } = req?.body;
       // console.log(req.body)
-      const result = await debtList.findByIdAndUpdate(_id, { name, date, amount, amount_paid, paid, written_by, comment }, { new: true });
+      const temp = amount
+      amount -= amount_paid
+      const commt = `${new Date().toLocaleDateString()} - Paid ${amount_paid}, so total debt = ${temp} - ${amount_paid} = ${amount} naira.`
+      history.push(commt)
+      if (amount === 0) {
+        paid = true;
+        history.push("PAID");
+      }
+      const result = await debtList.findByIdAndUpdate(_id, { name, date, amount, amount_paid, paid, written_by, tag, history }, { new: true });
       if (!result) {
         return res.status(404).json({ message: "Card not found" });
       }
@@ -80,7 +90,7 @@ export default class DebtController {
     } catch (error) {
       console.log(error);
       //@ts-ignore
-      res.status(500).json({ message: "Error", cause: error.message });
+      res.status(500).json({ message: "Error", cause: error });
     }
   }
   
@@ -91,8 +101,7 @@ export default class DebtController {
         return res.status(201).json({message: 'OK'})
       } catch (error) {
         console.log(error)
-        //@ts-expect-error
-        res.status(400).json({message: "Error", cause: error.message})
+        res.status(400).json({message: "Error", cause: error})
       }
   }
 

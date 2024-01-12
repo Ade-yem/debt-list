@@ -4,6 +4,7 @@ import Signup from '../pages/Signup.vue';
 import DebtBoard from '../pages/Board.vue';
 import PriceList from "../pages/PriceList.vue"
 import ForgotPassword from "../pages/ForgotPassword.vue"
+import ToBuy from '../pages/ToBuy.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import { store } from './store';
 import { checkUserAuth } from './auth-api';
@@ -15,6 +16,7 @@ const routes = [
   { path: '/forgot-password', component: ForgotPassword, name: 'forgot-password' },
   { path: '/debt-list', component: DebtBoard, name: 'debt-list' },
   { path: '/price-list', component: PriceList, name: 'price-list' },
+  { path: '/to-buy', component: ToBuy, name: 'to-buy' },
 
 ]
 
@@ -28,13 +30,13 @@ router.beforeEach(async (to, _, next) => {
 
   if (to.name != 'login' && to.name != 'signup' && to.name != 'forgot-password' && !isAuthenticated) {
     try {
-      const res = await checkUserAuth(); // Assuming checkUserAuth returns an object with a "username" property
+      const res = await checkUserAuth();
       store.loggedIn = true;
       console.log(res)
       store.user = res;
       next();
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      console.error(error.message);
       next('/login');
     }
   } else {

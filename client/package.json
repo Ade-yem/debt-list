@@ -18,12 +18,14 @@
     "vue": "^3.3.4",
     "vue-router": "^4.2.5",
     "vue-toastification": "^2.0.0-rc.5",
-    "vue3-typer": "^1.0.0"
+    "vue3-typer": "^1.0.0",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.10",
+    "@types/vuedraggable": "^2.24.0",
     "@vitejs/plugin-vue": "^4.2.3",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",

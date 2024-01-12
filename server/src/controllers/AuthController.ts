@@ -64,7 +64,7 @@ export default class AuthController {
       const phash = await hash(password, 10);
       user.password = phash;
       await user.save();
-      return res.status(200).json({message: "Password change successfull"})
+      return res.status(201).json({message: "Password change successfull"})
     } catch (error) {
       console.error(error)
       res.status(400).json({error})
@@ -78,7 +78,7 @@ export default class AuthController {
         res.clearCookie(cookieName, {
           path: "/", domain: "localhost", httpOnly: true, signed: true
         })
-        return res.status(200).json({message: 'User logged out successfully'})
+        return res.status(201).json({message: 'User logged out successfully'})
       } catch (error) {
         console.error(error)
       res.status(400).json({error})

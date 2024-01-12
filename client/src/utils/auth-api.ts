@@ -1,4 +1,5 @@
 import axios from "axios"
+import { store } from "./store";
 
 export const loginUser = async (user: Object) => {
   const res = await axios.post("/user/login", user)
@@ -30,13 +31,11 @@ export const registerUser = async (user: Object) => {
 
 export const logoutUser = async () => {
   const res = await axios.post("/user/logout")
-  if (res.status !== 201) {
-    throw new Error(res.data.error);
-  };
-  const data = await res.data
-  console.log(data.message);
-  window.location.href = "/login";
+  if (res.status === 201) {
+    store.user = ''
+  } else throw new Error(res.data.error);
 }
+
 export const checkUserAuth = async () => {
   const res = await axios.get("/user/status")
   if (res.status !== 200) {

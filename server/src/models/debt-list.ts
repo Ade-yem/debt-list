@@ -25,9 +25,13 @@ const debtSchema = new Schema({
     type: String,
     required: true
   },
-  comment: {
+  tag: {
     type: String,
+    enum: ['transfer', 'normal']
   },
+  history: {
+    type: [String]
+  }
   
 })
 

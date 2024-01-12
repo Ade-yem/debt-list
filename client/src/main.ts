@@ -15,7 +15,7 @@ import "vue-toastification/dist/index.css";
 library.add(faCaretDown, faBars, faTimes, faPlus, faTrash)
 
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
-axios.defaults.timeout = 10000;
+axios.defaults.timeout = 15000;
 axios.defaults.withCredentials = true;
 axios.defaults.headers.common['Content-Type'] = "application/json";
 
