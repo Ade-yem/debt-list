@@ -28,7 +28,7 @@ app.use(session({
   cookie: {
     secure: true,
     sameSite: "none",
-    domain: process.env.DOMAIN,
+    // domain: process.env.DOMAIN,
     path: "/",
     maxAge: 60 * 60 * 24 * 10 * 1000,
     signed: true,
