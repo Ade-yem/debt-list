@@ -4,6 +4,7 @@ import { config } from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import session from "express-session";
+import MongoDBStore from 'connect-mongodb-session';
 import { router } from "./routes/index.js";
 
 config()
@@ -12,10 +13,18 @@ const app = express();
 app.use(cors({origin: process.env.FRONTENDURL, credentials: true }))
 app.use(express.json());
 app.use(cookieParser(process.env.secretKey));
+
+const db = process.env.mongoURI as string;
+const store = new (MongoDBStore(session))({
+  uri: db,
+  collection: 'sessions',
+});
+
 app.use(session({
   secret: process.env.secretKey as string,
   resave: false,
   saveUninitialized: false,
+  store: store,
   cookie: {
     secure: true,
     sameSite: "none",
@@ -27,8 +36,10 @@ app.use(session({
   }
 }))
 app.use("/api/v1", router);
-const db = process.env.mongoURI as string;
 
+store.on('error', (error: any) => {
+  console.error(error);
+});
 mongoose
   .connect(db)
   .then(() => console.log("💻 Database Connected"))
