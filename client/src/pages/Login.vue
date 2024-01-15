@@ -37,7 +37,7 @@
     try {
       toast.info("Logging you in...", {id: "login"})
       const data = await store.login(username.value, password.value)
-      toast.success(`${data.message}`, {id: "login"})
+      toast.success(`$Welcome back {data.username}`, {id: "login"})
       store.loggedIn = true;
       store.user = data.username;
       router.push("/")

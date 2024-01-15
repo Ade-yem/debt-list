@@ -42,7 +42,7 @@
     try {
       toast.info("Creating your account", {id: "signup"})
       const data = await store.signup(username.value, name.value, password.value, confirm_password.value);
-      toast.success(`${data.message}`, {id: "signup"})
+      toast.success(`$Welcome {data.username}`, {id: "signup"})
       store.loggedIn = true;
       store.user = data.username
       router.push('/');

@@ -24,16 +24,7 @@ app.use(session({
   secret: process.env.secretKey as string,
   resave: false,
   saveUninitialized: false,
-  store: store,
-  cookie: {
-    secure: true,
-    sameSite: "none",
-    // domain: process.env.DOMAIN,
-    path: "/",
-    maxAge: 60 * 60 * 24 * 10 * 1000,
-    signed: true,
-    httpOnly: true
-  }
+  store: store
 }))
 app.use("/api/v1", router);
 

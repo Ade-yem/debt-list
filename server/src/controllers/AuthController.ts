@@ -2,6 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import User  from "../models/user.js"
 import { compare, hash } from "bcrypt";
 import { createToken } from "../utils/token-manager.js";
+import { config } from "dotenv";
+
+config()
 
 const cookieName = "auth_token";
 
@@ -15,9 +18,24 @@ export default class AuthController {
       const phash = await hash(password, 10);
       const newUser = new User({ name, username, password: phash });
       await newUser.save();
-      res.clearCookie(cookieName)
+      res.clearCookie(cookieName, {
+        domain: process.env.DOMAIN,
+        path: "/",
+        signed: true,
+        httpOnly: true
+      })
       const token = createToken(newUser._id.toString(), username, "10d");
-      res.cookie(cookieName, token)
+      const time = new Date()
+      time.setDate(time.getDate() + 10)
+      res.cookie(cookieName, token, {
+        secure: true,
+        sameSite: "none",
+        domain: process.env.DOMAIN,
+        path: "/",
+        expires: time,
+        signed: true,
+        httpOnly: true
+      })
       return res.status(201).json({message: "User signup successfull", username})
     } catch (error) {
       console.error(error)
@@ -33,9 +51,24 @@ export default class AuthController {
       if (!user) return res.status(401).json({error: "Invalid username"})
       const comp = await compare(password, user.password)
       if (!comp) return res.status(401).json({error: "Invalid password"})
-      res.clearCookie(cookieName)
+      res.clearCookie(cookieName, {
+        domain: process.env.DOMAIN,
+        path: "/",
+        signed: true,
+        httpOnly: true
+      })
       const token = createToken(user._id.toString(), username, "10d");
-      res.cookie(cookieName, token)
+      const time = new Date()
+      time.setDate(time.getDate() + 10)
+      res.cookie(cookieName, token, {
+        secure: true,
+        sameSite: "none",
+        domain: process.env.DOMAIN,
+        path: "/",
+        expires: time,
+        signed: true,
+        httpOnly: true
+      })
       return res.status(200).json({message: "User signin successfull", username})
     } catch (error) {
       console.error(error)
