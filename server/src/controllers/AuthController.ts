@@ -19,7 +19,7 @@ export default class AuthController {
       const newUser = new User({ name, username, password: phash });
       await newUser.save();
       res.clearCookie(cookieName, {
-        domain: process.env.DOMAIN,
+        // domain: process.env.DOMAIN,
         path: "/",
         signed: true,
         httpOnly: true
@@ -30,7 +30,7 @@ export default class AuthController {
       res.cookie(cookieName, token, {
         secure: true,
         sameSite: "none",
-        domain: process.env.DOMAIN,
+        // domain: process.env.DOMAIN,
         path: "/",
         expires: time,
         signed: true,
@@ -52,7 +52,7 @@ export default class AuthController {
       const comp = await compare(password, user.password)
       if (!comp) return res.status(401).json({error: "Invalid password"})
       res.clearCookie(cookieName, {
-        domain: process.env.DOMAIN,
+        // domain: process.env.DOMAIN,
         path: "/",
         signed: true,
         httpOnly: true
@@ -63,7 +63,7 @@ export default class AuthController {
       res.cookie(cookieName, token, {
         secure: true,
         sameSite: "none",
-        domain: process.env.DOMAIN,
+        // domain: process.env.DOMAIN,
         path: "/",
         expires: time,
         signed: true,
@@ -84,7 +84,7 @@ export default class AuthController {
       const phash = await hash(password, 10);
       user.password = phash;
       await user.save();
-      return res.status(201).json({message: "Password change successfull"})
+      return res.status(201).json({message: "Password change successful"})
     } catch (error) {
       console.error(error)
       res.status(400).json({error})
