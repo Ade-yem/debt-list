@@ -20,7 +20,7 @@
       </svg>
     </button>
     <!-- // a dropdown when the username is clicked that shows logout button -->
-    <div v-if="showLogout" class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+    <div v-if="showLogout" class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600" ref="logoutRef">
       <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
         <div>{{store.user}}</div>
       </div>
@@ -47,7 +47,7 @@
 </header>
 </template>
 <script setup lang="ts">
-  import { ref } from 'vue';
+  import { ref, onMounted, Ref } from 'vue';
   import { store } from '../utils/store';
   import { useToast } from 'vue-toastification';
   import { useRouter } from 'vue-router';
@@ -56,6 +56,7 @@
   const showLogout = ref(false);
   const toast = useToast();
   const router = useRouter();
+  const logoutRef: Ref<HTMLElement | null> = ref(null)
   const Logout = async () => {
     try {
     toast.info("Logging out", {id: "logout"})
@@ -70,6 +71,21 @@
       console.error(err)
     }
   }
+  onMounted(() => {
+  // Add a global click event listener
+  document.addEventListener('click', handleClickOutside);
+});
+
+const handleClickOutside = (event: Event) => {
+  // Check if the clicked element is outside the logout dropdown
+  if (showLogout.value && logoutRef.value && event.target instanceof Node && !logoutRef.value.contains(event.target)) {
+    // Close the dropdown
+    showLogout.value = false;
+  }
+};
   const toggleCaret = () => caret.value = !caret.value;
-  const toggleLogout = () => showLogout.value = !showLogout.value;
+  const toggleLogout = (e: Event) => {
+    e.stopPropagation()
+    showLogout.value = !showLogout.value;
+    }
 </script>
