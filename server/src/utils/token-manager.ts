@@ -23,7 +23,7 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
     return jwt.verify(token, secret, async (err: any, success: any) => {
       if (err) {
         // check
-        reject(err);
+        // reject(err);
         return res.status(401).json({error: " Wrong token or Unable to verify token"})
       } else {
         resolve();
