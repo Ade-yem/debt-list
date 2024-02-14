@@ -11,13 +11,15 @@ import { faBars, faCaretDown, faTimes, faPlus, faTrash} from '@fortawesome/free-
 import Toast, { POSITION, PluginOptions } from "vue-toastification";
 // Import the CSS or use your own!
 import "vue-toastification/dist/index.css";
+import { getToken } from './utils/token-manager.ts';
 
 library.add(faCaretDown, faBars, faTimes, faPlus, faTrash)
 
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 axios.defaults.timeout = 15000;
-axios.defaults.withCredentials = true;
 axios.defaults.headers.common['Content-Type'] = "application/json";
+const token = getToken("auth_token")
+axios.defaults.headers.common['Authorization'] = token
 
 const options: PluginOptions = {
   timeout: 10000,

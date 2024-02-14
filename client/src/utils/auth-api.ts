@@ -1,5 +1,6 @@
 import axios from "axios"
 import { store } from "./store";
+import { deleteToken, storeToken } from "./token-manager";
 
 export const loginUser = async (user: Object) => {
   const res = await axios.post("/user/login", user)
@@ -11,6 +12,7 @@ export const loginUser = async (user: Object) => {
     }
   }
   const data = await res.data
+  storeToken(data.token)
   return data;
     
 }
@@ -26,12 +28,14 @@ export const registerUser = async (user: Object) => {
     }
   }
   const data = await res.data
+  storeToken(data.token)
   return data;   
 }
 
 export const logoutUser = async () => {
   const res = await axios.post("/user/logout")
   if (res.status === 201) {
+    deleteToken("auth_token")
     store.user = ''
   } else throw new Error(res.data.error);
 }
@@ -42,7 +46,6 @@ export const checkUserAuth = async () => {
     throw new Error(res.data.error);
   };
   const data = await res.data
-  console.log(data.message)
   return data.username;
 }
 

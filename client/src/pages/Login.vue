@@ -40,6 +40,7 @@
       toast.success(`Welcome back ${data.username}`, {id: "login"})
       store.loggedIn = true;
       store.user = data.username;
+      
       router.push("/")
       
       } catch (err) {
