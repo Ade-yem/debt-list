@@ -54,7 +54,7 @@ export default class AuthController {
       const phash = await hash(password, 10);
       user.password = phash;
       await user.save();
-      return res.status(201).json({message: "Password change successfull"})
+      return res.status(201).json({message: "Password change successful"})
     } catch (error) {
       console.error(error)
       res.status(400).json({error})
